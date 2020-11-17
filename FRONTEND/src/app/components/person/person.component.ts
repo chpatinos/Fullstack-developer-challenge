@@ -1,8 +1,8 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonService } from 'src/app/services/person.service';
 import { Component, OnInit } from '@angular/core';
 import { Person } from 'src/app/models/person';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import swal from 'sweetalert2/src/sweetalert2.js';
+import swal from 'sweetalert2/dist/sweetalert2.min.js';
 
 @Component({
   selector: 'app-person',
@@ -55,7 +55,6 @@ export class PersonComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
     if (this.personForm.invalid) return;
 
     let person: Person = this.personForm.value;
@@ -68,6 +67,8 @@ export class PersonComponent implements OnInit {
       swal.close();
 
       if (resp && resp.status === "success") {
+        this.submitted = false;
+        this.resetForm();
         this.closeModal();
         this.refreshPersons();
         swal.fire('Person', 'Person created successfully', 'success');
@@ -81,7 +82,6 @@ export class PersonComponent implements OnInit {
       }
     }, error => {
       swal.close();
-      console.log(error.error.error.name === "SequelizeUniqueConstraintError");
       if (error.error.error.name === "SequelizeUniqueConstraintError") {
         swal.fire('Person', 'This person already exist in system. Try with another CC person', 'warning');
       }
@@ -120,11 +120,16 @@ export class PersonComponent implements OnInit {
     });
   }
 
+  private resetForm() {
+    this.personForm = this.formBuilder.group({
+      cc: [null, Validators.required],
+      fullname: ['', Validators.required],
+      birth: ['', Validators.required]
+    })
+  }
+
   private closeModal() {
-    document.getElementsByClassName("modal-backdrop")[0].remove();
-    document.getElementById("createPersonModal").style.display = "none";
-    document.getElementById("createPersonModal").classList.remove("show");
-    document.getElementsByTagName("body")[0].classList.remove("modal-open");
+    document.getElementById("close-modal").click();
   }
 
 }

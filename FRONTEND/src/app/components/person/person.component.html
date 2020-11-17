@@ -1,13 +1,13 @@
-<header>
-  <div class="row justify-content-center align-items-center my-3 mt-md-5">
-    <div class="col-12 text-white text-center">
-      <h1>Carlos Humberto Patiño Salazar</h1>
-      <h2><span class="badge badge-pill badge-dark">Full Stack Developer Challenge</span></h2>
-    </div>
-  </div>
-</header>
-
 <div class="container-fluid">
+  <header>
+    <div class="row justify-content-center align-items-center my-3 mt-md-5">
+      <div class="col-12 text-white text-center">
+        <h1>Carlos Humberto Patiño Salazar</h1>
+        <h2><span class="badge badge-pill badge-dark">Full Stack Developer Challenge</span></h2>
+      </div>
+    </div>
+  </header>
+
   <div class="row justify-content-center">
     <div class="col-md-9">
       <button type="button" class="btn btn-dark btn-rounded btn-lg float-right my-3"
@@ -50,6 +50,7 @@
             <div class="form-group">
               <label for="cc">CC</label>
               <input type="number" formControlName="cc" id="cc" class="form-control"
+                onKeyPress="if(this.value.length==9) return false;"
                 [ngClass]="{ 'is-invalid': submitted && f.cc.errors }" autocomplete="false" />
               <div *ngIf="submitted && f.cc.errors" class="invalid-feedback">
                 <div *ngIf="f.cc.errors.required">CC is required</div>
@@ -73,7 +74,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-rounded btn-lg"
+        <button id="close-modal" type="button" class="btn btn-secondary btn-rounded btn-lg"
           data-dismiss="modal">Close
           modal</button>
         <button type="submit" form="personForm"
