@@ -1,7 +1,15 @@
 const personRouter = require("../routes/personRouter");
 const request = require("supertest");
 const express = require("express");
+const dotenv = require("dotenv");
+const db = require("../models");
 const app = express();
+
+db.sequelize.sync({ force: true });
+
+dotenv.config({
+  path: "./config.env",
+});
 
 app.use(express.json());
 
@@ -10,10 +18,27 @@ app.use("/api/v1/persons", personRouter);
 let testPersons;
 
 describe("testing-person-routes", () => {
-  //CREATE CHILD ENDPOINT
-  it("POST /api/v1/persons - success", async () => {
+  //INIT
+  it("GET Initializing Database Connection", async () => {
+    await request(app).get("/api/v1/persons");
+    expect(1).toEqual(1);
+  });
+
+  //GET ALL EMPTY
+  it("GET All - Empty", async () => {
+    const { body } = await request(app).get("/api/v1/persons");
+    expect(body).toEqual({
+      status: "success",
+      results: 0,
+      data: [],
+    });
+  });
+
+  //CREATE FIRST PERSON ENDPOINT
+  it("POST First Person", async () => {
     let person = {
-      fullname: "Child test full name",
+      cc: 1010101010,
+      fullname: "First Person Full Name",
       birth: "1999/09/20",
     };
     const { body } = await request(app).post("/api/v1/persons").send(person);
@@ -24,10 +49,11 @@ describe("testing-person-routes", () => {
     });
   });
 
-  //CREATE FATHER ENDPOINT
-  it("POST /api/v1/persons - success", async () => {
+  //CREATE SECOND PERSON ENDPOINT
+  it("POST Second Person", async () => {
     let person = {
-      fullname: "Father test full name",
+      cc: 1010101011,
+      fullname: "Second Person Full Name",
       birth: "1956/09/05",
     };
     const { body } = await request(app).post("/api/v1/persons").send(person);
@@ -38,10 +64,11 @@ describe("testing-person-routes", () => {
     });
   });
 
-  //CREATE MOTHER ENDPOINT
-  it("POST /api/v1/persons - success", async () => {
+  //CREATE THIRD PERSON ENDPOINT
+  it("POST Third Person", async () => {
     let person = {
-      fullname: "Mother test full name",
+      cc: 1010101012,
+      fullname: "Third Person Full Name",
       birth: "1974/09/06",
     };
     const { body } = await request(app).post("/api/v1/persons").send(person);
@@ -53,22 +80,25 @@ describe("testing-person-routes", () => {
   });
 
   //GET ALL ENDPOINT
-  it("GET /api/v1/persons - success", async () => {
+  it("GET ALL 3 persons", async () => {
     const { body } = await request(app).get("/api/v1/persons");
     expect(body).toMatchObject({
       status: "success",
       results: 3,
       data: [
         {
-          fullname: "Child test full name",
+          cc: 1010101010,
+          fullname: "First Person Full Name",
           birth: new Date("1999/09/20").toISOString(),
         },
         {
-          fullname: "Father test full name",
+          cc: 1010101011,
+          fullname: "Second Person Full Name",
           birth: new Date("1956/09/05").toISOString(),
         },
         {
-          fullname: "Mother test full name",
+          cc: 1010101012,
+          fullname: "Third Person Full Name",
           birth: new Date("1974/09/06").toISOString(),
         },
       ],
@@ -76,8 +106,8 @@ describe("testing-person-routes", () => {
     testPersons = body.data;
   });
 
-  //GET BY ID ENDPOINT
-  it("GET /api/v1/persons/1 - success", async () => {
+  //GET BY ID ENDPOINTS
+  it("GET BY ID First Person", async () => {
     const { body } = await request(app).get(`/api/v1/persons/${testPersons[0].id}`);
     expect(body).toMatchObject({
       status: "success",
@@ -85,25 +115,19 @@ describe("testing-person-routes", () => {
     });
   });
 
-  //FATHER ADOPT BY ID ENDPOINT
-  it("GET /api/v1/persons/2/adoptLikeFather/1 - success", async () => {
-    const { body } = await request(app).patch("/api/v1/persons/2/adoptLikeFather/1");
-    testPersons[0].father = 2;
+  it("GET BY ID Second Person", async () => {
+    const { body } = await request(app).get(`/api/v1/persons/${testPersons[1].id}`);
     expect(body).toMatchObject({
       status: "success",
-      father: testPersons[1],
-      adopted: testPersons[0],
+      data: testPersons[1],
     });
   });
 
-  //MOTHER ADOPT BY ID ENDPOINT
-  it("GET /api/v1/persons/3/adoptLikeMother/1 - success", async () => {
-    const { body } = await request(app).patch("/api/v1/persons/3/adoptLikeMother/1");
-    testPersons[0].mother = 3;
+  it("GET BY ID Third Person", async () => {
+    const { body } = await request(app).get(`/api/v1/persons/${testPersons[2].id}`);
     expect(body).toMatchObject({
       status: "success",
-      mother: testPersons[2],
-      adopted: testPersons[0],
+      data: testPersons[2],
     });
   });
 });
