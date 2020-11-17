@@ -1,0 +1,26 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(73, 73, 73);
+  color: white;
+  font-size: larger;
+}
+
+header {
+  height: 20vh;
+}
+
+.btn-rounded {
+  border-radius: 10rem;
+}
+
+.modal-content {
+  background-color: rgb(73, 73, 73) !important;
+}
+
+.form-control {
+  color: white !important;
+  background-color: rgb(87, 87, 87) !important;
+}
