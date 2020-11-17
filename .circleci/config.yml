@@ -17,4 +17,4 @@ jobs:
           cache-path: ~/project/BACKEND/node_modules
           override-ci-command: npm install
       - run:
-          command: ~/project/BACKEND/package.json npm run test
+          command: cd BACKEND && npm run test
