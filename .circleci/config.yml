@@ -12,5 +12,9 @@ jobs:
     executor: node/default
     steps:
       - checkout
+      - node/install-packages:
+          app-dir: ~/project/BACKEND
+          cache-path: ~/project/BACKEND/node_modules
+          override-ci-command: npm install
       - run:
-          command: cd BACKEND && npm install && npm start && npm run test
+          command: ~/project/BACKEND/package.json npm run test 
