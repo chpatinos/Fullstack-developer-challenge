@@ -21,6 +21,9 @@ describe("testing-person-routes", () => {
   //INIT
   it("GET Initializing Database Connection", async () => {
     await request(app).get("/api/v1/persons");
+    await request(app).get("/api/v1/persons/1");
+    await request(app).get("/api/v1/persons");
+    await request(app).get("/api/v1/persons/2");
     expect(1).toEqual(1);
   });
 

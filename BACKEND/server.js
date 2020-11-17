@@ -2,7 +2,7 @@ const db = require("./models");
 const dotenv = require("dotenv");
 const app = require("./app");
 
-db.sequelize.sync();
+db.sequelize.sync({ force: true });
 
 dotenv.config({
   path: "./config.env",
