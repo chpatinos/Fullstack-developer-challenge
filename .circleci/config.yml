@@ -16,4 +16,6 @@ jobs:
           app-dir: ~/project/BACKEND
           cache-path: ~/project/BACKEND/node_modules
           override-ci-command: npm install
-      - run: sudo /home/circleci/project/BACKEND/ npm run test
+      - run:
+          app-dir: ~/project/BACKEND
+          override-ci-command: npm run test
