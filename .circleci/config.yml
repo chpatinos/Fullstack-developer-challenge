@@ -18,4 +18,4 @@ jobs:
           override-ci-command: npm install
       - run:
           app-dir: ~/project/BACKEND
-          override-ci-command: npm run test
+          command: npm run test
