@@ -13,7 +13,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          app-dir: ~/BACKEND
-          cache-path: ~/BACKEND/node_modules
+          app-dir: ~/project/BACKEND
+          cache-path: ~/project/BACKEND/node_modules
           override-ci-command: npm install
       - run: npm run test
